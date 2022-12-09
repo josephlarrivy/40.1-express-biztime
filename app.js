@@ -9,6 +9,24 @@ const ExpressError = require("./expressError")
 app.use(express.json());
 
 
+
+
+
+
+
+// this might not be what I need
+const companyRoutes = require("./routes/companies");
+app.use("/companies", companyRoutes);
+
+const invoicesRoutes = require("./routes/invoices");
+app.use("/invoices", invoicesRoutes);
+// this might not be what I need
+
+
+
+
+
+
 /** 404 handler */
 
 app.use(function(req, res, next) {
