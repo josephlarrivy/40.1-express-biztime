@@ -2,7 +2,7 @@
 
 
 const express = require("express");
-
+const server = require('./server')
 const app = express();
 const ExpressError = require("./expressError")
 
@@ -45,5 +45,9 @@ app.use((err, req, res, next) => {
   });
 });
 
+
+app.listen(3000, function () {
+  console.log("Server is listening on port 3000");
+});
 
 module.exports = app;
