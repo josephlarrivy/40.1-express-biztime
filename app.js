@@ -46,8 +46,16 @@ app.use((err, req, res, next) => {
 });
 
 
+
+
+// move this back to server.js when you figure out what's wrong with that file
 app.listen(3000, function () {
   console.log("Server is listening on port 3000");
 });
+// move this back to server.js when you figure out what's wrong with that file
+
+
+
+
 
 module.exports = app;
