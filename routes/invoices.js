@@ -16,11 +16,23 @@ router.get("/", async function (req, res, next) {
     }
 });
 
-// returns invoice by code
-router.get("/:code", async function (req, res, next) {
-    let compCode = req.params.code
+// // returns invoice by code
+// router.get("/:code", async function (req, res, next) {
+//     let compCode = req.params.code
+//     try {
+//         const results = await db.query(`SELECT * FROM invoices WHERE comp_Code = '${compCode}'`);
+//         return res.json({ company: results.rows });
+//     }
+//     catch (err) {
+//         return next(err);
+//     }
+// });
+
+// returns invoice by id
+router.get("/:id", async function (req, res, next) {
+    let inv_id = req.params.id
     try {
-        const results = await db.query(`SELECT * FROM invoices WHERE comp_Code = '${compCode}'`);
+        const results = await db.query(`SELECT * FROM invoices WHERE id = '${inv_id}'`);
         return res.json({ company: results.rows });
     }
     catch (err) {
@@ -49,21 +61,22 @@ router.put("/:id", async function (req, res, next) {
         let { amt, paid } = req.body;
         console.log(amt)
         console.log(paid)
-        let paid_date = null;
+        let paidDate = null;
+
         let get_invoice = await db.query(`SELECT * FROM invoices WHERE id = '${inv_id}'`)
         let current_status = get_invoice.rows[0].paid_date
         // let code = get_invoice.rows[0].comp
         console.log(current_status)
 
-        if (paid === true) {
-            paid_date = new Date();
-        // } else if (paid !== false) {
-            // paid_date = null;
+        if (!current_status && paid) {
+            paidDate = new Date();
+        } else if (!paid) {
+            paidDate = null;
         } else {
-            paid_date = current_status;
+            paidDate = current_status;
         }
         let result = await db.query(
-            `UPDATE invoices SET amt=$1, paid=$2, paid_date=$3 WHERE id='${inv_id}'`, [0, true, paid_date]);
+            `UPDATE invoices SET amt=$1, paid=$2, paid_date=$3 WHERE id='${inv_id}'`, [amt, paid, add_date, paidDate]);
         return res.status(201).json({ "invoice updated": result.rows[0] });
     }
     catch (err) {
